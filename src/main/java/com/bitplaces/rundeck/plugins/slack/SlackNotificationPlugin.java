@@ -68,47 +68,11 @@ public class SlackNotificationPlugin implements NotificationPlugin {
 
     private static final Configuration FREEMARKER_CFG = new Configuration();
 
-
-
     @PluginProperty(
             title = "WebHook URL",
             description = "Slack Incoming WebHook URL",
             required = true)
     private String webhook_url;
-
-//    @PluginProperty(
-//            title = "Team Domain",
-//            description = "Slack team domain.",
-//            required = true)
-//    private String teamDomain;
-//
-//    @PluginProperty(
-//            title = "Channel",
-//            description = "This is dummy",
-//            required = false,
-//            defaultValue = "#general")
-//    private String room;
-//
-//    @PluginProperty(
-//            title = "Icon Url",
-//            description = "Override webhook Icon",
-//            required = false
-//    )
-//    private String icon_url;
-//
-//    @PluginProperty(
-//            title = "User Name",
-//            description = "Override webhook username",
-//            required = false
-//    )
-//    private String username;
-//    @PluginProperty(
-//            title = "External Template",
-//            description = "External Freemarker Template to use for notifications",
-//            required = false
-//    )
-//    private String external_template;
-
 
     /**
      * Sends a message to a Slack room when a job notification event is raised by Rundeck.
@@ -157,21 +121,7 @@ public class SlackNotificationPlugin implements NotificationPlugin {
             throw new IllegalArgumentException("Unknown trigger type: [" + trigger + "].");
         }
 
-//        if (teamDomain.isEmpty()) {
-//            throw new SlackNotificationPluginException(
-//                    "Slack teamDomain 'plugin.Notification.SlackNotification.teamDomain' missing in framework or project properties");
-//        }
-//
-//        if (apiAuthToken.isEmpty()) {
-//            throw new SlackNotificationPluginException(
-//                    "Slack apiAuthToken 'plugin.Notification.SlackNotification.apiAuthToken' missing in framework or project properties");
-//        }
-
-        // String message = generateMessage(trigger, executionData, config, room);
         String message = generateMessage(trigger, executionData, config);
-//        String token = String.format(SLACK_API_TOKEN, urlEncode(apiAuthToken));
-//        String slackResponse = invokeSlackAPIMethod(teamDomain, token, message);
-//        String slackResponse = invokeSlackAPIMethod(teamDomain, token, message);
         String slackResponse = invokeSlackAPIMethod(webhook_url, message);
         String ms = "payload=" + URLEncoder.encode(message);
 
