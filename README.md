@@ -30,9 +30,11 @@ The only required configuration settings are:
 
 ## Slack message example.
 
+On success.
 
 ![on success](on_success.png)
 
+On failure.
 
 ![on failure](on_failure.png)
 
