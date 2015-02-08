@@ -47,11 +47,6 @@ import freemarker.template.TemplateException;
 @PluginDescription(title="Slack Incoming WebHook", description="Sends Rundeck Notifications to Slack")
 public class SlackNotificationPlugin implements NotificationPlugin {
 
-//    private static final String SLACK_API_BASE = ".slack.com/";
-//    private static final String SLACK_API_URL_SCHEMA = "https://";
-//    private static final String SLACK_API_WEHOOK_PATH = "services/hooks/incoming-webhook";
-//    private static final String SLACK_API_TOKEN = "?token=%s";
-
     private static final String SLACK_MESSAGE_COLOR_GREEN = "good";
     private static final String SLACK_MESSAGE_COLOR_YELLOW = "warning";
     private static final String SLACK_MESSAGE_COLOR_RED = "danger";
@@ -71,8 +66,8 @@ public class SlackNotificationPlugin implements NotificationPlugin {
     @PluginProperty(
             title = "WebHook URL",
             description = "Slack Incoming WebHook URL",
-            required = true,
-            scope = PropertyScope.Project
+            required = true
+//            scope = PropertyScope.Project
             )
     private String webhook_url;
 
