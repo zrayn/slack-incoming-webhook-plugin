@@ -66,9 +66,8 @@ public class SlackNotificationPlugin implements NotificationPlugin {
     @PluginProperty(
             title = "WebHook URL",
             description = "Slack Incoming WebHook URL",
-            required = true
-//            scope = PropertyScope.Project
-            )
+            required = true,
+            scope = PropertyScope.Framework)
     private String webhook_url;
 
     /**
