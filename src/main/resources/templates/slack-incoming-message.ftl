@@ -1,4 +1,9 @@
-<#assign message="<${executionData.href}|Execution #${executionData.id}> of job <${executionData.job.href}|${executionData.job.name}>">
+<#if executionData.job.group??>
+    <#assign jobName="${executionData.job.group} / ${executionData.job.name}">
+<#else>
+    <#assign jobName="${executionData.job.name}">
+</#if>
+<#assign message="<${executionData.href}|Execution #${executionData.id}> of job <${executionData.job.href}|${jobName}>">
 <#if trigger == "start">
     <#assign state="Started">
 <#elseif trigger == "failure">
@@ -6,6 +11,7 @@
 <#else>
     <#assign state="Succeeded">
 </#if>
+
 {
    "attachments":[
       {
@@ -15,7 +21,7 @@
          "fields":[
             {
                "title":"Job Name",
-               "value":"<${executionData.job.href}|${executionData.job.name}>",
+               "value":"<${executionData.job.href}|${jobName}>",
                "short":true
             },
             {
