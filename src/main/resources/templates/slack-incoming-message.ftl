@@ -35,8 +35,8 @@
             }
 <#if trigger == "failure">
             ,{
-               "title":"Faild Nodes",
-               "value":"${executionData.failedNodeListString}",
+               "title":"Failed Nodes",
+               "value":"${executionData.failedNodeListString!"- (Job itself failed)"}",
                "short":false
             }
 </#if>
