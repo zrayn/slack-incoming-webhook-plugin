@@ -63,7 +63,7 @@ public class SlackNotificationPlugin implements NotificationPlugin {
 
     private static final Configuration FREEMARKER_CFG = new Configuration();
 
-    @PluginProperty(title = "WebHook URL", description = "Slack Incoming WebHook URL", scope = PropertyScope.Framework)
+    @PluginProperty(title = "WebHook URL", description = "Slack Incoming WebHook URL", required = true)
     private String webhook_url;
 
     /**
