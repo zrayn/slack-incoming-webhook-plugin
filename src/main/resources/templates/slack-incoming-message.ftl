@@ -39,6 +39,11 @@
                "value":"<${executionData.href}|#${executionData.id}>",
                "short":true
             }
+            ,{
+               "title":"Options",
+               "value":"${executionData.argstring}",
+               "short":true
+            }
 <#if trigger == "failure">
             ,{
                "title":"Failed Nodes",
@@ -50,4 +55,3 @@
       }
    ]
 }
-
