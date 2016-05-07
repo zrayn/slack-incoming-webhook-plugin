@@ -38,10 +38,15 @@
                "title":"Execution ID",
                "value":"<${executionData.href}|#${executionData.id}>",
                "short":true
-            }
-            ,{
+            },
+            {
                "title":"Options",
                "value":"${executionData.argstring}",
+               "short":true
+            },
+            {
+               "title":"Started By",
+               "value":"${executionData.user}",
                "short":true
             }
 <#if trigger == "failure">
