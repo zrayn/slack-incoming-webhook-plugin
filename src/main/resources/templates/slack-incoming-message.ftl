@@ -41,7 +41,7 @@
             },
             {
                "title":"Options",
-               "value":"${executionData.argstring!"N/A"}",
+               "value":"${(executionData.argstring?replace('"', '\''))!"N/A"}",
                "short":true
             },
             {
