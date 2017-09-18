@@ -13,6 +13,9 @@
 </#if>
 
 {
+<#if channel??>
+   "channel":"${channel}",
+</#if>
    "attachments":[
       {
          "fallback":"${state}: ${message}",
