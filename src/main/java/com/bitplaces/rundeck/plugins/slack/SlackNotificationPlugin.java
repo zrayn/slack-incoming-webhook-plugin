@@ -69,6 +69,8 @@ public class SlackNotificationPlugin implements NotificationPlugin {
     @PluginProperty(title = "WebHook Token", description = "WebHook Token, like T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX", required = true)
     private String webhook_token;
 
+    @PluginProperty(title = "Slack Channel", description = "Slack Channel, like #channel-name (optional)")
+    private String slack_channel;
 
     /**
      * Sends a message to a Slack room when a job notification event is raised by Rundeck.
@@ -105,7 +107,7 @@ public class SlackNotificationPlugin implements NotificationPlugin {
 
         String webhook_url=this.webhook_base_url+"/"+this.webhook_token;
 
-        String message = generateMessage(trigger, executionData, config);
+        String message = generateMessage(trigger, executionData, config, this.slack_channel);
         String slackResponse = invokeSlackAPIMethod(webhook_url, message);
         String ms = "payload=" + URLEncoder.encode(message);
 
@@ -118,8 +120,7 @@ public class SlackNotificationPlugin implements NotificationPlugin {
         }
     }
 
-    // private String generateMessage(String trigger, Map executionData, Map config, String channel) {
-    private String generateMessage(String trigger, Map executionData, Map config) {
+    private String generateMessage(String trigger, Map executionData, Map config, String channel) {
         String templateName = TRIGGER_NOTIFICATION_DATA.get(trigger).template;
         String color = TRIGGER_NOTIFICATION_DATA.get(trigger).color;
 
@@ -128,6 +129,9 @@ public class SlackNotificationPlugin implements NotificationPlugin {
         model.put("color", color);
         model.put("executionData", executionData);
         model.put("config", config);
+        if (channel != null) {
+            model.put("channel", channel);
+        }
 
         StringWriter sw = new StringWriter();
         try {
