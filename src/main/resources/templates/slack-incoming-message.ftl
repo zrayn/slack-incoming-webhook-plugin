@@ -13,13 +13,19 @@
 </#if>
 
 {
+<#if username??>
+   "username":"${username}",
+</#if>
 <#if channel??>
    "channel":"${channel}",
 </#if>
+<#if icon_emoji??>
+   "icon_emoji":"${icon_emoji}",
+</#if>
    "attachments":[
       {
-         "fallback":"${state}: ${message}",
-         "pretext":"${message}",
+         "fallback":"${state}: ${additional_message}${message}",
+         "pretext":"${additional_message}${message}",
          "color":"${color}",
          "fields":[
             {

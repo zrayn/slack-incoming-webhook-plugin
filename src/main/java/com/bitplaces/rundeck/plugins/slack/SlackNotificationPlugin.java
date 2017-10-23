@@ -62,15 +62,50 @@ public class SlackNotificationPlugin implements NotificationPlugin {
 
     private static final Configuration FREEMARKER_CFG = new Configuration();
 
-    @PluginProperty(title = "WebHook Base URL", description = "Slack Incoming WebHook Base URL", required = true, defaultValue = "https://hooks.slack.com/services")
+    @PluginProperty(
+        title = "WebHook Base URL",
+        description = "Slack Incoming WebHook Base URL",
+        required = true,
+        defaultValue = "https://hooks.slack.com/services",
+        scope = PropertyScope.Project
+    )
     private String webhook_base_url;
 
     @Password
-    @PluginProperty(title = "WebHook Token", description = "WebHook Token, like T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX", required = true)
+    @PluginProperty(
+        title = "WebHook Token",
+        description = "WebHook Token, like T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
+        required = true,
+        scope = PropertyScope.Project
+    )
     private String webhook_token;
 
-    @PluginProperty(title = "Slack Channel", description = "Slack Channel, like #channel-name (optional)")
+    @PluginProperty(
+        title = "Additional Message",
+        description = "Message to add to the default job notification (optional)",
+        scope = PropertyScope.InstanceOnly
+    )
+    private String additional_message;
+
+    @PluginProperty(
+        title = "Slack Username",
+        description = "The name of the user to send the message as (optional)",
+        scope = PropertyScope.Project
+    )
+    private String slack_username;
+
+    @PluginProperty(
+        title = "Slack Channel",
+        description = "Slack Channel, like #channel-name (optional)"
+    )
     private String slack_channel;
+
+    @PluginProperty(
+        title = "Icon Emoji",
+        description = "The icon emoji to post with, like :robot_face: (optional)",
+        scope = PropertyScope.Project
+    )
+    private String icon_emoji;
 
     /**
      * Sends a message to a Slack room when a job notification event is raised by Rundeck.
@@ -107,7 +142,15 @@ public class SlackNotificationPlugin implements NotificationPlugin {
 
         String webhook_url=this.webhook_base_url+"/"+this.webhook_token;
 
-        String message = generateMessage(trigger, executionData, config, this.slack_channel);
+        String message = generateMessage(
+            trigger,
+            executionData,
+            config,
+            this.additional_message,
+            this.slack_username,
+            this.slack_channel,
+            this.icon_emoji
+        );
         String slackResponse = invokeSlackAPIMethod(webhook_url, message);
         String ms = "payload=" + URLEncoder.encode(message);
 
@@ -120,7 +163,15 @@ public class SlackNotificationPlugin implements NotificationPlugin {
         }
     }
 
-    private String generateMessage(String trigger, Map executionData, Map config, String channel) {
+    private String generateMessage(
+        String trigger,
+        Map executionData,
+        Map config,
+        String additional_message,
+        String username,
+        String channel,
+        String icon_emoji
+    ) {
         String templateName = TRIGGER_NOTIFICATION_DATA.get(trigger).template;
         String color = TRIGGER_NOTIFICATION_DATA.get(trigger).color;
 
@@ -129,8 +180,23 @@ public class SlackNotificationPlugin implements NotificationPlugin {
         model.put("color", color);
         model.put("executionData", executionData);
         model.put("config", config);
+
+        if (additional_message == null) {
+            additional_message = "";
+        }
+        else {
+            additional_message = additional_message + '\n';
+        }
+        model.put("additional_message", additional_message);
+
+        if (username != null) {
+            model.put("username", username);
+        }
         if (channel != null) {
             model.put("channel", channel);
+        }
+        if (icon_emoji != null) {
+            model.put("icon_emoji", icon_emoji);
         }
 
         StringWriter sw = new StringWriter();
